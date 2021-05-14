@@ -14,13 +14,12 @@ const AttributeForm = () => {
         goal: ''
     })
 
-    const [macros, setMacros] = useState({
-        protein: '',
-        carbs: '',
-        fat: ''
-    })
-    
 
+
+    const [protein, setProtein] = useState(0)
+    const [fat, setFat] = useState(0)
+    const [carbs, setCarbs] = useState(0)
+    const [calories, setCalories] = useState(0)
 
     const handleChange = (e) => {
         setForm({
@@ -30,12 +29,20 @@ const AttributeForm = () => {
         // console.log(form)
     }
 
+
+    
+
     const handleSubmit = (e) => {
         e.preventDefault()
+        
         if (form.gender === "Female") {
             femaleCalorieNeed()
             console.log(femaleCalorieNeed())
-        } 
+
+        } else {
+            maleCalorieNeed()
+            console.log(maleCalorieNeed())
+        }
     }
 
     // Calculations for Females
@@ -53,34 +60,238 @@ const AttributeForm = () => {
         const veryActiveTDEE = REE * 1.725
 
         // Arrays that stores the calculated data for calories and macros
-        const goalCalories = []
-        const protein = []
-        const fat = []
-        const carbs = []
+        const femaleGoalCalories = []
+        const femaleProtein = []
+        const femaleFat = []
+        const femaleCarbs = []
+        const remainingCals = []
+        
+        
+        
 
         // Calculates TDEE(Movement Expedenture) based on activity level
         if (form.activity === "Sedentary: little or no excercise") {
-            goalCalories.push(sedentaryTDEE)
+            femaleGoalCalories.push(Math.round(sedentaryTDEE))
+            setCalories(femaleGoalCalories[0])
         } else if (form.activity === "Light Activity: excercise 1-3 times/week") {
-            goalCalories.push(lightActTDEE)
+            femaleGoalCalories.push(Math.round(lightActTDEE))
+            setCalories(femaleGoalCalories[0])
         } else if (form.activity === "Moderate Activity: excercise 4-5 times/week") {
-            goalCalories.push(moderateActTDEE)
+            femaleGoalCalories.push(Math.round(moderateActTDEE))
+            setCalories(femaleGoalCalories[0])
         } else {
-            goalCalories.push(veryActiveTDEE)
+            femaleGoalCalories.push(Math.round(veryActiveTDEE))
+            setCalories(femaleGoalCalories[0])
         }
 
 
         // Calculates estimated calorie need based on goals
         if (form.goal === "Maintain Weight") {
-            return goalCalories[0] + " calories"
+            // protein macros
+            const proteinIntake = form.weight * .8
+            const proteinCal = proteinIntake * 4
+            let calories = femaleGoalCalories[0] - proteinCal
+            remainingCals.push(calories)
+            femaleProtein.push(Math.round(proteinIntake))
+            setProtein(femaleProtein[0])
+        
+
+
+            // fats macros
+            const fatCal = femaleGoalCalories[0] * .25
+            const fatIntake = fatCal / 9
+            calories = remainingCals[0] - fatCal
+            remainingCals.pop()
+            remainingCals.push(calories)
+            femaleFat.push(Math.round(fatIntake))
+            setFat(femaleFat[0])
+            
+
+            // female carbs
+            const carbIntake = remainingCals[0] / 4
+            femaleCarbs.push(Math.round(carbIntake))
+            setCarbs(femaleCarbs[0])
+
+            
+
+            return {Calories: femaleGoalCalories[0] + " calories", Protein: femaleProtein[0] + " grams of proteins", Carbs: femaleCarbs[0] + " grams of carbs", Fats: femaleFat[0] + " grams of fat"}
+
         } else if (form.goal === "Lose Weight") {
-            const loseWeight = goalCalories[0] - (goalCalories[0] * .20)
-            // const proteinIntake = form.weight * .8
-            // protein.push(proteinIntake)
-            return loseWeight + " calories"
+            const loseWeight = femaleGoalCalories[0] - (femaleGoalCalories[0] * .20)
+
+             // protein macros
+             const proteinIntake = form.weight * .8
+             const proteinCal = proteinIntake * 4
+             let calories = femaleGoalCalories[0] - proteinCal
+             remainingCals.push(calories)
+             femaleProtein.push(Math.round(proteinIntake))
+             setProtein(femaleProtein[0])
+ 
+ 
+             // fats macros
+             const fatCal = loseWeight * .25
+             const fatIntake = fatCal / 9
+             calories = remainingCals[0] - fatCal
+             remainingCals.pop()
+             remainingCals.push(calories)
+             femaleFat.push(Math.round(fatIntake))
+             setFat(femaleFat[0])
+ 
+             // female carbs
+             const carbIntake = remainingCals[0] / 4
+             femaleCarbs.push(Math.round(carbIntake))
+             setCarbs(femaleCarbs[0])
+
+            return {Calories: Math.round(loseWeight) + " calories", Protein: femaleProtein[0] + " grams of proteins", Carbs: femaleCarbs[0] + " grams of carbs", Fats: femaleFat[0] + " grams of fats"}
+
         } else if (form.goal === "Build Muscle") {
-            const buildMuscle = goalCalories[0] + (goalCalories[0] * .20)
-            return buildMuscle + " calories"
+
+            const buildMuscle = femaleGoalCalories[0] + (femaleGoalCalories[0] * .20)
+             // protein macros
+             const proteinIntake = form.weight * 1
+             const proteinCal = proteinIntake * 4
+             let calories = femaleGoalCalories[0] - proteinCal
+             remainingCals.push(calories)
+             femaleProtein.push(Math.round(proteinIntake))
+             setProtein(femaleProtein[0])
+ 
+ 
+             // fats macros
+             const fatCal = buildMuscle * .25
+             const fatIntake = fatCal / 9
+             calories = remainingCals[0] - fatCal
+             remainingCals.pop()
+             remainingCals.push(calories)
+             femaleFat.push(Math.round(fatIntake))
+             setFat(femaleFat[0])
+ 
+             // female carbs
+             const carbIntake = remainingCals[0] / 4
+             femaleCarbs.push(Math.round(carbIntake))
+             setCarbs(femaleCarbs[0])
+
+            return {Calories: Math.round(buildMuscle) + " calories", Protein: femaleProtein[0] + " grams of proteins", Carbs: femaleCarbs[0] + " grams of carbs", Fats: femaleFat[0] + " grams of fats"}
+        }
+    }
+
+    // Calculations for males
+    const maleCalorieNeed = () => {
+        const lbToKg = parseInt(form.weight) * 0.45359237
+        const inToCm = parseInt(form.height) * 2.54
+
+        // calculates REE (Resting Energy Expedenture) for males
+        const REE = 10 * lbToKg + 6.25 * parseInt(inToCm) - 5 * parseInt(form.age) + 5
+
+        // calculates TDEE based on activity level
+        const sedentaryTDEE = REE * 1.2
+        const lightActTDEE = REE * 1.375
+        const moderateActTDEE = REE * 1.55
+        const veryActiveTDEE = REE * 1.725
+
+        // Arrays that stores the calculated data for calories and macros
+        const maleGoalCalories = []
+        const maleProtein = []
+        const maleFat = []
+        const maleCarbs = []
+        const remainingCals = []
+
+        // Calculates TDEE(Movement Expedenture) based on activity level
+        if (form.activity === "Sedentary: little or no excercise") {
+            maleGoalCalories.push(Math.round(sedentaryTDEE))
+            setCalories(maleGoalCalories[0])
+        } else if (form.activity === "Light Activity: excercise 1-3 times/week") {
+            maleGoalCalories.push(Math.round(lightActTDEE))
+            setCalories(maleGoalCalories[0])
+        } else if (form.activity === "Moderate Activity: excercise 4-5 times/week") {
+            maleGoalCalories.push(Math.round(moderateActTDEE))
+            setCalories(maleGoalCalories[0])
+        } else {
+            maleGoalCalories.push(Math.round(veryActiveTDEE))
+            setCalories(maleGoalCalories[0])
+        }
+
+
+        // Calculates estimated calorie need based on goals
+        if (form.goal === "Maintain Weight") {
+
+            // protein Macros
+            const proteinIntake = form.weight * .8
+            const proteinCal = proteinIntake * 4
+            let calories = maleGoalCalories[0] - proteinCal
+            remainingCals.push(calories)
+            maleProtein.push(Math.round(proteinIntake))
+            setProtein(maleProtein[0])
+
+            // fats Macros
+            const fatCal = maleGoalCalories[0] * .25
+            const fatIntake = fatCal / 9
+            calories = remainingCals[0] - fatCal
+            remainingCals.pop()
+            remainingCals.push(calories)
+            maleFat.push(Math.round(fatIntake))
+            setFat(maleFat[0])
+
+            // carb macros
+            const carbIntake = remainingCals[0] / 4
+            maleCarbs.push(Math.round(carbIntake))
+            setCarbs(maleCarbs[0])
+
+            return {Calories: maleGoalCalories[0] + " calories", Protein: maleProtein[0] + " grams of proteins", Carbs: maleCarbs[0] + " grams of carbs", Fats: maleFat[0] + " grams of fat"}
+
+        } else if (form.goal === "Lose Weight") {
+            const loseWeight = maleGoalCalories[0] - (maleGoalCalories[0] * .20)
+            
+            // Protein macros
+            const proteinIntake = form.weight * .8
+            const proteinCal = proteinIntake * 4
+            let calories = maleGoalCalories[0] - proteinCal
+            remainingCals.push(calories)
+            maleProtein.push(Math.round(proteinIntake))
+            setProtein(maleProtein[0])
+
+            // fats macros
+            const fatCal = loseWeight * .25
+            const fatIntake = fatCal / 9
+            calories = remainingCals[0] - fatCal
+            remainingCals.pop()
+            remainingCals.push(calories)
+            maleFat.push(Math.round(fatIntake))
+            setFat(maleFat[0])
+
+            // carbs macros
+            const carbIntake = remainingCals[0] / 4
+            maleCarbs.push(Math.round(carbIntake))
+            setCarbs(maleCarbs[0])
+
+            return {Calories: loseWeight + " calories", Protein: maleProtein[0] + " grams of proteins", Carbs: maleCarbs[0] + " grams of carbs", Fats: maleFat[0] + " grams of fat"}
+
+        } else if (form.goal === "Build Muscle") {
+
+            const buildMuscle = maleGoalCalories[0] + (maleGoalCalories[0] * .20)
+
+            // protein macros
+            const proteinIntake = form.weight * .83
+            const proteinCal = proteinIntake * 4
+            let calories = maleGoalCalories[0] - proteinCal
+            remainingCals.push(calories)
+            maleProtein.push(Math.round(proteinIntake))
+            setProtein(maleProtein[0])
+
+            // fats macros
+            const fatCal = buildMuscle * .25
+            const fatIntake = fatCal / 9
+            calories = remainingCals[0] - fatCal
+            remainingCals.pop()
+            remainingCals.push(calories)
+            maleFat.push(Math.round(fatIntake))
+            setFat(maleFat[0])
+
+            // female carbs
+            const carbIntake = remainingCals[0] / 4
+            maleCarbs.push(Math.round(carbIntake))
+            setCarbs(maleCarbs[0])
+
+            return {Test: console.log(fatCal), Calories: Math.round(buildMuscle) + " calories", Protein: maleProtein[0] + " grams of proteins", Carbs: maleCarbs[0] + " grams of carbs", Fats: maleFat[0] + " grams of fats"}
         }
     }
 
