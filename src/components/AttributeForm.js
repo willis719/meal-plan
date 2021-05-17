@@ -98,7 +98,7 @@ const AttributeForm = () => {
 
 
             // fats macros
-            const fatCal = femaleGoalCalories[0] * .25
+            const fatCal = femaleGoalCalories[0] * .30
             const fatIntake = fatCal / 9
             calories = remainingCals[0] - fatCal
             remainingCals.pop()
@@ -122,14 +122,14 @@ const AttributeForm = () => {
              // protein macros
              const proteinIntake = form.weight * .8
              const proteinCal = proteinIntake * 4
-             let calories = femaleGoalCalories[0] - proteinCal
+             let calories = loseWeight - proteinCal
              remainingCals.push(calories)
              femaleProtein.push(Math.round(proteinIntake))
              setProtein(femaleProtein[0])
  
  
              // fats macros
-             const fatCal = loseWeight * .25
+             const fatCal = loseWeight * .30
              const fatIntake = fatCal / 9
              calories = remainingCals[0] - fatCal
              remainingCals.pop()
@@ -148,16 +148,16 @@ const AttributeForm = () => {
 
             const buildMuscle = femaleGoalCalories[0] + (femaleGoalCalories[0] * .20)
              // protein macros
-             const proteinIntake = form.weight * 1
+             const proteinIntake = form.weight * .85
              const proteinCal = proteinIntake * 4
-             let calories = femaleGoalCalories[0] - proteinCal
+             let calories = buildMuscle - proteinCal
              remainingCals.push(calories)
              femaleProtein.push(Math.round(proteinIntake))
              setProtein(femaleProtein[0])
  
  
              // fats macros
-             const fatCal = buildMuscle * .25
+             const fatCal = buildMuscle * .30
              const fatIntake = fatCal / 9
              calories = remainingCals[0] - fatCal
              remainingCals.pop()
@@ -223,7 +223,7 @@ const AttributeForm = () => {
             setProtein(maleProtein[0])
 
             // fats Macros
-            const fatCal = maleGoalCalories[0] * .25
+            const fatCal = maleGoalCalories[0] * .30
             const fatIntake = fatCal / 9
             calories = remainingCals[0] - fatCal
             remainingCals.pop()
@@ -244,13 +244,13 @@ const AttributeForm = () => {
             // Protein macros
             const proteinIntake = form.weight * .8
             const proteinCal = proteinIntake * 4
-            let calories = maleGoalCalories[0] - proteinCal
+            let calories = loseWeight - proteinCal
             remainingCals.push(calories)
             maleProtein.push(Math.round(proteinIntake))
             setProtein(maleProtein[0])
 
             // fats macros
-            const fatCal = loseWeight * .25
+            const fatCal = loseWeight * .30
             const fatIntake = fatCal / 9
             calories = remainingCals[0] - fatCal
             remainingCals.pop()
@@ -272,13 +272,13 @@ const AttributeForm = () => {
             // protein macros
             const proteinIntake = form.weight * .83
             const proteinCal = proteinIntake * 4
-            let calories = maleGoalCalories[0] - proteinCal
+            let calories = buildMuscle - proteinCal
             remainingCals.push(calories)
             maleProtein.push(Math.round(proteinIntake))
             setProtein(maleProtein[0])
 
             // fats macros
-            const fatCal = buildMuscle * .25
+            const fatCal = buildMuscle * .30
             const fatIntake = fatCal / 9
             calories = remainingCals[0] - fatCal
             remainingCals.pop()
